@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .red{
+            color:red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>v-on是用来定义事件</h1>
+        <button  v-on:click='hello'>按钮</button>
+        <br>
+        <button  v-on:click='hello(1,2,3,{a:1,b:1})'>按钮</button>
+        <br>
+
+        <form action="" v-on:click='hello'>
+                <!-- 事件修饰符.stop的作用可以阻止冒泡 -->
+                <button  v-on:click.stop='hello'>按钮</button>
+        </form>
+
+        <!-- v-on可以简写为@ -->
+        <button @click='hello'>sdadas</button>
+        <!-- v-bind:可以简写为: -->
+        <div :yy='1+1'>sdad</div>
+    </div>
+</body>
+</html>
+<script src="./vue.js"></script>
+<script>
+    var vm = new Vue({
+        //data方法内不能写方法,一般写数据
+        data:function(){
+            return {
+               
+            }
+        },
+        //method用来定义方法
+        methods:{
+            hello:function(){
+                // window.alert(111)
+                console.log(arguments);
+            }
+        }
+    })
+    vm.$mount('#app');
+</script>

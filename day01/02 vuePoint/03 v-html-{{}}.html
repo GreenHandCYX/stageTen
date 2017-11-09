@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- vue 渲染区域 -->
+    <div id="app">
+        <p v-text='msg'></p>
+        <p v-text='name'></p>
+        v-html(innerHTML)和v-text(innerText)的区别就在于是否可以解析html标签
+        <br>
+        <p v-html='msg'></p>
+        <p v-html='name'></p>
+
+
+        <!-- 插值表达式 -->
+        <p>{{msg}}</p>
+        {{name}}
+        <!-- 插值表达式相当于v-text -->
+        <!-- 插值表达式不能用于属性中，除了属性以外的渲染区域内的地方都可以用-->
+        <!-- <p v-text='{{msg}}'></p> -->
+        <!-- <p {{msg}}></p> -->
+    </div>
+
+
+  
+</body>
+</html>
+<!-- 引入 -->
+<script src="./vue.js"></script>
+<script>
+    // 实例化
+    var vm = new Vue({
+        data:function(){
+            return {
+                msg:'html要显示的内容',
+                name:'<h1>name</h1>'
+            }
+        }
+    })
+    //vue渲染到哪一部分区域
+    vm.$mount('#app');
+</script>

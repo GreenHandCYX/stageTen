@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+            <input type="text" v-model='msg'>
+            <p v-text='msg'></p>
+    </div>
+   
+</body>
+</html>
+<!-- 1.引入包文件 -->
+<script src="./vue.js"></script>
+
+<script>
+    //2.创建实例化对象
+    var obj = {
+        msg:'我是中国人'
+    }
+   var vm = new Vue({
+        data:function(){
+            return obj;
+        }
+    })
+
+    //3.$mount指告诉vue渲染你到哪一部分区域
+    //参数是一个选择器
+    vm.$mount('#app')
+</script>

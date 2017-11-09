@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    　　	<div id="A" class="a" style="display:block;">A</div>
+    　　	<div id="B" class="b" style="display:none;">B</div>
+    　　	<div id="C" class="c"   style="display:none;">C</div>
+</body>
+<script>
+    function hashChanged(hashObj) {
+        // console.log('hashChanged')
+        console.log(hashObj)//指hash对象
+        // 获取新旧url，隐藏旧的，显示新的
+        var newhash = hashObj.newURL.split('#/')[1];
+        var oldhash = hashObj.oldURL.split('#/')[1];
+        document.getElementById(oldhash).style.display = 'none';
+        document.getElementById(newhash).style.display = 'block'
+    }
+
+    //监听hash的改变
+    //hash值(#/后的内容)一旦改变则会触发当前方法
+    window.onhashchange = hashChanged
+</script>
+</html>

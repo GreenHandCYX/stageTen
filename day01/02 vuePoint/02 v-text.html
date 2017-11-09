@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>v-text一般用于正常显示的标签,input除外</h1>
+        <span v-text='msg'></span>
+        <!-- v-text内部可以写js表达式 -->
+        <p v-text='1+1'></p>
+        <p v-text="'1'+1"></p>
+        <!-- v-text内部可以写函数 -->
+        <p v-text='Math.random()'></p>
+        <p v-text="typeof JSON.stringify({a:1,b:3})"></p>
+        <p v-text="JSON.stringify({a:1,b:3})"></p>
+
+        <!-- v-text内部不能使用bom以及bom对象的属性 -->
+        <!-- <p v-text="window.location.href"></p> -->
+        <!-- window全局定义的属性也不能用,除非是data方法返回的对象中的属性 -->
+        <!-- <p v-text="alert(111)"></p> -->
+        <p v-text="'name'+1"></p>
+        <p v-text="name+1"></p>
+
+
+
+        <!-- 在vue中,用v-开头的属性叫指令 -->
+    </div>
+</body>
+</html>
+<!-- 引入包 -->
+<script src="./vue.js"></script>
+<script>
+    var vm = new Vue({
+        data:function(){
+            return {
+                msg:'你好',
+                name:999
+            }
+        }
+    })
+
+   // vue渲染到哪一部分区域
+    vm.$mount('#app')
+</script>

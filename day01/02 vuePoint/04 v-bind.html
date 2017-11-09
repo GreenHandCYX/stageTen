@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .red{
+            color:red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- <p aa='msg内容'></p> -->
+        <p v-bind:aa='msg'></p>
+        <!-- v-bind指将aa属性的值绑定为vue的全局变量，再取其对应的值 -->
+   
+        <img v-bind:src="imgPath" alt="">
+        <div v-bind:class="color">这是一个div</div>
+        <div v-bind:yy='1+1'>adsfasdf</div>
+        <div v-bind:yy='Math.random()'>这是一个div</div>
+        <!-- <div v-bind:yy='alert(111)'>这是一个div</div> -->
+    </div>
+</body>
+</html>
+<script src="./vue.js"></script>
+<script>
+    var vm = new Vue({
+        data:function(){
+            return {
+                color:'red',
+                msg:'msg内容',
+                imgPath:'./img/demo01.jpeg'
+            }
+        }
+    })
+    vm.$mount('#app');
+</script>
