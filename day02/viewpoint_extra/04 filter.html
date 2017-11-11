@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{birthday | getAge}}
+        <!-- {{msg | upper}} -->
+        {{msg | upperStr}}
+        {{name | lowerStr}}
+    </div>
+    <div id="app1">
+        {{name1 | upperStr}}
+    </div>
+         
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <script>
+        //过滤器：指对通过管道流入的数据进行处理然后再渲染到页面上
+        //分为实例内的私有过滤器(只能本身实例使用),公有过滤器(所有实例共享)
+
+        //公有过滤器  参数为要过滤的值,只能单独一个个的设置的过滤器
+        Vue.filter('upperStr',function(val) {
+           return val.toUpperCase();
+        })
+
+        var vm1 = new Vue({
+            el:'#app1',
+            data:function(){
+                return {
+                    name1:'sdjfosif'
+                }
+            }
+        });
+
+        var vm = new Vue({
+            el:'#app',
+            data:function(){
+                return {
+                    birthday:'2007/12/7',
+                    msg:'dsjofjsoifsof',
+                    name:'JOGJSOIDFsdsfsfISF'
+              }
+            },
+            //私有过滤器：可以同时定义多个
+            //以键值对的形式存在，键为过滤器名，值为过滤器的具体处理方法(参数为要过滤的值)
+            //需要返回处理后的值
+            filters:{
+                getAge:function(val){
+                    var birthday = new Date(val).getFullYear();
+                    var now = new Date().getFullYear();
+                    return now - birthday;
+                },
+                lowerStr:function(val){
+                    return val.toLowerCase();
+                }
+            }
+        })
+    </script>
+</body>
+</html>

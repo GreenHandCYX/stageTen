@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" v-model="msg">
+    <input type="text" v-model="name">
+    <p v-text='msg'></p>
+</body>
+</html>
+<script>
+    // function DataBind(opt){
+    //     var obj = opt.data();
+    //     var inps = document.querySelectorAll('[v-model]');
+    //     for (var i = 0; i < inps.length; i++) {
+    //         var inp = inps[i];
+    //         var attrVal = inp.getAttribute('v-model');;
+    //        inp.value = obj[attrVal];
+            
+    //     }
+    // }
+</script>
+<script src="./06form-value.js"></script>
+<script>
+    var obj = {
+        msg:'你好',
+        name:'我是小明'
+    }
+new DataBind({
+    data:function(){
+        return obj;
+    }
+})
+</script>

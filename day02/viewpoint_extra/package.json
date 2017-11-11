@@ -1,0 +1,16 @@
+{
+  "name": "viewpoint_extra",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "json-server ./data.json"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.17.0",
+    "json-server": "^0.12.1",
+    "vue": "^2.5.3"
+  }
+}

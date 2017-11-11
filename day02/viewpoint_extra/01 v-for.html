@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+   <div id="app">
+       {{msg}}
+       <h1>v-for的使用</h1>
+       <div v-for="item in list">
+           <p>{{item}}</p>
+       </div>
+       <!-- 注意：给谁加v-for就遍历谁 -->
+       <!-- vue2.0索引在后面 -->
+       <div v-for="(item,index) in list">
+        <p>{{item}}-----{{index}}</p>
+        </div>
+        <!-- 也可以遍历字符串输出每一个字符 -->
+       <ul>
+           <li v-for='item in "asdasd fasdf"'>{{item}}</li>
+       </ul>
+       <!-- 遍历数字从一开始 -->
+       <ul>
+            <li v-for='item in 8'>{{item}}</li>
+       </ul>
+
+       <ul>
+           <li v-for='item in user'>{{item}}</li>
+       </ul>
+
+       <!-- 对象也可以有索引值 -->
+       <!-- 值 - 键 - 索引 -->
+       <ul>
+        <li v-for='(item,key,index) in user'>{{item}}---{{key}}---{{index}}</li>
+        </ul>
+   </div>
+</body>
+</html>
+<script src="./node_modules/vue/dist/vue.js"></script>
+<script>
+    var vm = new Vue({
+        el:'#app',
+        data:function(){
+            return {
+                msg:'nihao',
+                list:['狼厂','鹅厂','鸟厂','马厂','数字工厂','猫场'],
+                user:{
+                    name:'小明',
+                    age:23
+                }
+            }
+        }
+    })
+</script>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>v-model的使用</h1>
+        <!-- v-model可以实现双向数据绑定 -->
+        <h2>基础用法</h2>
+        <input type="text" v-model='msg'>
+        <textarea name="" v-model='msg' id="" cols="30" rows="10"></textarea>
+   
+
+        <!-- 多选，单选都是判断v-model与value的值是否相等来确定选中,checkbox时的单选框可以单独使用v-model -->
+        <h2>单选</h2>
+        <input type="radio" name="" id="" v-model='sex' value="1">男
+        <input type="radio" name="" id="" v-model='sex' value="2">女
+
+
+        <h2>多选 一个</h2>
+        <input type="checkbox" name="" v-model='isTrue' id="">你是?
+
+
+
+        <h2>多选 多个</h2>
+        <input type="checkbox" name="" value="01" v-model='hobby' id="">吃饭
+        <input type="checkbox" name="" value="02" v-model='hobby' id="">睡觉
+        <input type="checkbox" name="" value="03" v-model='hobby' id="">打豆豆
+        <input type="checkbox" name="" value="04" v-model='hobby' id="">男人
+        <input type="checkbox" name="" value="05" v-model='hobby' id="">女人
+
+        {{hobby}}
+    </div>
+
+
+
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el:'#app',
+            data:function(){
+                return {
+                    msg:'sdf',
+                    sex:1,
+                    isTrue:true,
+                    hobby:[
+                        '03','04'
+                    ]
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model='msg'>
+        <!-- 为dom元素加一个别名便于之后在vue实例中操作该元素 -->
+        <button ref='btn'>{{msg}}</button>
+    </div>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el:'#app',
+            data:function(){
+                return {
+                    msg:'你好'
+                }
+            },
+            updated:function(){
+                //this指当前绑定的要渲染vue元素
+                alert(this.$refs.btn);
+            }
+            ,
+            //在vue对象中在mounted方法里面获取dom元素
+            //在vue渲染时就会加载执行
+            mounted:function(){
+                const _this = this
+                setTimeout(function(){
+                    _this.$refs.btn.innerHTML = 'SSDSADAS'
+                    // $refs代表别名对应元素组成的数组，在react中不带$
+                },3000)
+               
+            }
+        })
+    </script>
+</body>
+</html>

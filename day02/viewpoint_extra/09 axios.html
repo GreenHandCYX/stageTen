@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+            <button @click="hello">按钮</button>
+    </div>
+    
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <script src="./node_modules/axios/dist/axios.js"></script>
+    <script>
+        //在vue中使用axios来模拟ajax请求
+        var vm = new Vue({
+            el: '#app',
+            data: function () {
+                return {
+
+                }
+            },
+            methods:{
+                hello:function(){
+                    //get方式
+                    axios.get('http://localhost:3000/user',{
+                       params:{
+                            age:20
+                       }
+                    }).then(function(response){
+                        console.log(response)
+                    }).catch(function(err){
+                        console.log(err)
+                    })
+                    
+                    // //post方式
+                    // axios.post('http://localhost:3000/user',{
+                    //    id:20
+                    // }).then(function(response){
+                    //     console.log(response)
+                    // }).catch(function(err){
+                    //     console.log(err)
+                    // })
+                }
+            }
+        })
+
+
+
+        // vscode中有一个很好的插件  可以模拟服务器
+            // json-server
+            // 这个插件使用的步骤: 
+            // 1.npm安装:　　npm install json-server --save
+            // 2. 配置package.json文件
+            //          "scripts": {
+            //              "dev" : "json-server ./db.json  --watch"
+            //          },
+            // 3. 调用当前配置好的命令
+            // npm run dev
+    </script>
+</body>
+</html>
