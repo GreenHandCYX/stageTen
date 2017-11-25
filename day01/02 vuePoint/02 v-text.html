@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
     <title>Document</title>
 </head>
 <body>
     <div id="app">
         <h1>v-text一般用于正常显示的标签,input除外</h1>
-        <span v-text='msg'></span>
+        <span v-text='msg.abc'></span>
         <!-- v-text内部可以写js表达式 -->
         <p v-text='1+1'></p>
         <p v-text="'1'+1"></p>
@@ -37,7 +38,9 @@
     var vm = new Vue({
         data:function(){
             return {
-                msg:'你好',
+                msg:{
+                    abc:'sss'
+                },
                 name:999
             }
         }

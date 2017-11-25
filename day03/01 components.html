@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- 1.全局组件的调用和标签的调用形式一样
+             2.在vue里使用单闭合标签后再使用一个双闭合标签只会显示一个，所以一般不推荐使用单闭合标签
+             
+             3.自定义组件中间不要加入内容,例如这里的1111,因为最终整个区域都会被覆盖掉
+-->
+        <hello>11111</hello>
+<!-- 
+        4.vue在定义组件时如果组件名中含有大写,实际调用时需将大写字母转为小写并在前面加- -->
+
+        <my-component></my-component>
+    </div>
+    <script src="./components/node_modules/vue/dist/vue.js">
+    </script>
+    <script>
+        //全局组件
+        Vue.component('myComponent',{
+            data:function(){
+                return {
+                    world:'hello world'
+                }
+            },
+            template:'<strong>{{world}}</strong>'
+        })
+
+        new Vue({
+            el:'#app',
+            data:function(){
+                return {
+                    msg:"你好"
+                }
+            },
+            // 这里用来定义各个私有组件
+            // 定义组件需要有两个参数:
+            // 1.组件的名称
+            // 2.组件的内容
+            //私有组件,在vue实例不传值的情况下只能访问自身的data
+            components:{
+                hello:{
+                    data:function(){
+                        return {
+                            home:'搜索'
+                        }
+                    },
+                    //组件中的模板
+                    template:'<h1>{{home}}</h1>'
+                }
+            }
+        })
+    </script>
+</body>
+</html>

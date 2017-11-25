@@ -305,7 +305,6 @@ v-html(innerHTML)和v-text(innerText)的区别就在于是否可以解析html标
     })
     vm.$mount('#app');
 </script>
-
 ```
 
 ```vue
@@ -332,8 +331,6 @@ v-bind:class绑定一个对象时可以用于控制多个类名
             如下面的代码不会生效
          -->
         <!-- <div v-bind:class="sex===1">这是一个div</div> -->
-         <!-- 这样写就可以 -->
-      <div v-bind:class="red:sex===1">这是一个div</div>
     </div>
 </body>
 </html>
@@ -425,7 +422,7 @@ v-else在使用时必须和v-if连用,并且不需要判断条件
                
             }
         },
-        //method用来定义方法
+        //methods用来定义方法
         methods:{
             hello:function(){
                 // window.alert(111)
@@ -470,7 +467,7 @@ v-else在使用时必须和v-if连用,并且不需要判断条件
        <!-- 值 - 键 - 索引 -->
        <ul>
         <li v-for='(item,key,index) in user'>{{item}}---{{key}}---{{index}}</li>
-        </ul>
+       </ul>
    </div>
 ```
 
@@ -627,6 +624,7 @@ v-else在使用时必须和v-if连用,并且不需要判断条件
             //私有过滤器：可以同时定义多个
             //以键值对的形式存在，键为过滤器名，值为过滤器的具体处理方法(参数为要过滤的值)
             //需要返回处理后的值
+          //过滤器如果要传参数则实际在处理函数中是从第二个形参开始，第一个形参为要处理的数据
             filters:{
                 getAge:function(val){
                     var birthday = new Date(val).getFullYear();
@@ -679,7 +677,7 @@ v-else在使用时必须和v-if连用,并且不需要判断条件
                 //可以是对象
               
                 myName:{
-                    //读取代理值
+                    //处理代理值
                     // get:function () {
                     //     return this.name + '.heima'
                     // },
@@ -728,17 +726,26 @@ data:{}只能在vue组件中(new Vue({}))使用，其他组件只能通过data:{
 
 
 
-# vue生命周期的钩子方法
+# vue生命周期的钩子方法（实例化vue对象时就存在了）
 
 > vue生命周期的钩子方法触发的条件是vue实例化对象了，vue的声明周期开始执行
 >
-> 1. beforeCreate方法是在实例化对象代理data,methods,computed等属性之前调用的方法
-> 2. create是在beforeCreate方法调用之后调用的方法,此时已完成实例化对象的代理
+> 1. beforeCreate方法是在实例化对象代理data,methods,computed等属性之前调用的方法，此时不可发送请求，methods等属性还未加载
+>
+> 2. created是在beforeCreate方法调用之后调用的方法,此时已完成实例化对象的代理,  可发送请求了
+>
+>    但dom还未生成,$el属性还不可见
+>
 > 3. vue程序执行的时候，是先从Dom中获取的vue语法规定的指令或者{{}},这时并没有解析，只有在vue加载完成时才会将这些语法读取并解析相应的值,而在这之前会调用beforeMount(挂载之前)
-> 4. 往页面挂载完毕后会触发mounted
+>
+> 4. 往页面挂载完毕后会触发mounted,  el 被新创建的 this.$el 替换，并挂载到实例上去
+>
 > 5. 一旦有数据的改变会走更新的方法，在走更新方法之前会调用下面的方法beforeUpdate
+>
 > 6. 更新之后会触发updated
+>
 > 7. 在当前组件被干掉之前调用的方法beforeDestroy（用于释放资源）
+>
 > 8. 当当前组件被销毁时调用的方法destroyed
 
 > ### 实例化对象代理：
@@ -901,6 +908,7 @@ data:{}只能在vue组件中(new Vue({}))使用，其他组件只能通过data:{
 > 1.   computed有缓存机制(获取data时是先储存在缓存中，然后修改缓存的数据再更改到页面中),
 > 2.   而watch没有,相当于直接对数据进行操作；
 > 3.   所以最好使用computed而不使用watch
+> 4.   但是在进行ajax操作时应用watch直接监听数据的变化
 
 
 
@@ -1041,4 +1049,1072 @@ data:{}只能在vue组件中(new Vue({}))使用，其他组件只能通过data:{
 
 
 
-postman可以模拟浏览器请求
+
+
+# component组件
+
+在vue里使用单闭合标签后再使用一个双闭合标签只会显示一个，所以一般不推荐使用单闭合标签
+
+vue在定义组件时如果组件名中含有大写,实际调用时需将大写字母转为小写并在前面加-
+
+```vue
+  <div id="app">
+        <!-- 1.全局组件的调用和标签的调用形式一样
+             2.在vue里使用单闭合标签后再使用一个双闭合标签只会显示一个，所以一般不推荐使用单闭合标签
+             
+             3.自定义组件中间不要加入内容,例如这里的1111,因为最终整个区域都会被覆盖掉
+-->
+        <hello>11111</hello>
+<!-- 
+        4.vue在定义组件时如果组件名中含有大写,实际调用时需将大写字母转为小写并在前面加- -->
+
+        <my-component></my-component>
+    </div>
+    <script src="./components/node_modules/vue/dist/vue.js">
+    </script>
+    <script>
+        //全局组件
+        Vue.component('myComponent',{
+            data:function(){
+                return {
+                    world:'hello world'
+                }
+            },
+            template:'<strong>{{world}}</strong>'
+        })
+
+        new Vue({
+            el:'#app',
+            data:function(){
+                return {
+                    msg:"你好"
+                }
+            },
+            // 这里用来定义各个私有组件
+            // 定义组件需要有两个参数:
+            // 1.组件的名称
+            // 2.组件的内容
+            //私有组件,在vue实例不传值的情况下只能访问自身的data
+            components:{
+                hello:{
+                    data:function(){
+                        return {
+                            home:'搜索'
+                        }
+                    },
+                    //组件中的模板
+                    template:'<h1>{{home}}</h1>'
+                }
+            }
+        })
+    </script>
+```
+
+
+
+### 在实际开发中经常利用webpack将component,vue实例,页面进行分离后再打包管理
+
+> import 是es6新增的导入文件的方式,类似于nodejs的require模块,需要指定一个别名；在template中必须只有一个跟标签
+>
+> vue中规定组件文件需以.vue结尾
+>
+> 用webpack将vue实例的入口文件(实例化的文件)和组件文件(.vue文件)转为浏览器可以识别的文件（浏览器不识别es6），最后引入html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# webpack
+
+把你的项目当做一个整体，通过一个给定的主文件（如：index.js），Webpack将从这个文件开始找到你的项目的所有依赖文件，使用loaders处理它们，最后打包为一个（或多个）浏览器可识别的JavaScript文件。
+
+webpack可以将es6转为es5：通过babel-loader
+
+webpack使用步骤:
+
+1. 全局安装webpack
+
+   > npm install webpack -g
+
+2. 本地安装
+
+   > npm install webpack --save-dev
+
+3. 使用:创建一个webpack.config.js文件,对webpack进行配置,通过运行这个文件来加载webpack
+
+   > webpack
+
+4. 在实际开发中通常将原始文件放入src文件中,而将打包后的文件放入dist文件中
+
+加载器(loader)在文件导入之前对不识别的文件类型做预处理
+
+webpack.config.js
+
+```javascript
+//导入路径模块
+var path =require('path')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var webpack = require('webpack')
+
+module.exports = {
+    //第一部分 入口和出口的设置
+    // entry:'./src/main.js',
+    entry:{
+        app:'./src/main.js',
+        //用来处理公用的js文件
+        vendor:['vue']
+    },
+    output:{
+        path:path.join(__dirname+'/dist'),
+        filename:'bundle.js'
+    },
+    //第二部分,加载器的添加
+    module:{
+        rules:[
+            //第一个加载器,解析.vue文件的vue-loader
+            {
+                test:/\.vue$/,
+                use:'vue-loader'
+            },
+            //第二个加载器,解析css的css-loader
+            // {
+            //     test: /\.css$/,
+            //     use: [ 'style-loader', 'css-loader' ]
+            // },
+            {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                  fallback: "style-loader",
+                  use: "css-loader"
+                })
+              }
+        ]
+    },
+    //配置开发服务器，用来监听src源文件的变化，如果源文件有变化，自动进行打包处理，显示结果
+    //文件放在内存中
+    devtool:'eval',
+    devServer:{
+        //告诉当前服务器监听的区域
+        contentBase:__dirname + '/src',
+        hot:true, //是否提供热更新功能
+        open:true,//是否自动打开浏览器
+        port:8080,//端口号的配置
+        host:'localhost',
+        openPage:""
+    },
+
+    //第三部分 插件
+    plugins:[
+         //需要安装并引入
+    //自动生成html文件和指明需要依赖的相关css和js文件
+    new HtmlWebpackPlugin({
+        //指定以哪个作为模板进行生成
+        template: './src/index.html',
+        htmlWebpackPlugin: {
+          "files": {//指明需要依赖的相关css和js文件
+            "css": ["app.css"],
+            "js": ["bundle.js",'vendor.js']
+          }
+        },
+         //webpack -p压缩代码
+        // 压缩 情怀至上
+        minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeAttributeQuotes: true
+        }
+    }),
+
+    //将css从合并后的bundle.js文件中拆分出来
+    new ExtractTextPlugin('app.css'),
+
+    //提取公共js代码
+    new webpack.optimize.CommonsChunkPlugin({name: 'vendor',filename:'vendor.js'}),
+    ]
+}
+```
+
+
+
+在实际开发一般分为webpack.develop.config.js和webpack.puiblish.config.js两个配置文件（注意此时不能使用webpack.config.js）
+
+需配置:
+
+```json	
+   "develop":"webpack --config webpack.develop.config.js -p",
+    "publish":"webpack --config webpack.publish.config.js"
+```
+
+
+
+#### 补充点:
+
+> 
+>
+> url-loader的limit配置项用来规定打包前图片小于某个临界值时转为base64格式加载图片，否则按图片本身加载,
+>
+> 这个值的单位是bite,注8bite=1byte,1B = 1byte 
+>
+> 
+>
+> babel-loader是webpack中的用于把es6转为es5的加载器
+>
+> 
+>
+> 常用的服务器插件:
+>
+> webpack-dev-server可以监听文件的变化以实现自动打包
+>
+> 
+>
+> socket是ip+端口号
+>
+> 
+>
+> webpack插件分两种:自身模块(optimize中,不需要引入)，第三方需要引入
+>
+> 
+>
+> #### 加载器是在打包前运行,插件是在打包后运行
+>
+> 
+>
+> ExtractTextPlugin将css从合并后的bundle.js文件中拆分出来
+>
+> 
+>
+>  webpack.optimize.CommonsChunkPlugin提取公共js代码
+
+
+
+
+
+
+
+
+
+
+
+# 父子组件传值，子组件需要在父组件中引用并声明
+
+### 父组件给子组件传值
+
+```vue
+<template>
+  <div>
+    <!-- <img src="./images/demo.jpg" alt=""> -->
+      <!-- 引用子组件,并以属性的形式传入父组件的值 -->
+      <Son :yy="1" :aa="msg"></Son>
+      App.vue
+  </div>
+  <!-- 注意：模板必须有一个根元素 -->
+</template>
+
+<script>
+//引入子组件
+import Son from "./Son.vue";
+export default {
+  //将组件内的变量等暴露出去
+  
+  data:function(){
+    return {
+      msg:'给son的礼物'
+    }
+  },
+  components:{
+    //需在父组件中声明子组件
+    // Son:Son//别名一致可以只写一个
+    Son
+  }
+}
+</script>
+
+<style>
+div{
+    color:red;
+}
+</style>
+```
+
+```vue
+<template>
+  <div>Son.vue</div>
+</template>
+<script>
+export default {
+  data:function(){
+      return {
+
+      }
+  },
+  //将父组件传来的值绑定在子组件上
+  props:['yy','aa'],
+  created:function(){
+      //实例化代理后获取
+      console.log(this.aa,this.yy)
+  }
+}
+</script>
+```
+
+
+
+
+
+### 子组件给父组件传值
+
+```vue
+<template>
+  <div>
+      Son.vue
+      <!-- 点击向父组件以事件标识的方式传递值 -->
+    <button @click='hello'>按钮</button>
+
+  </div>
+</template>
+<script>
+export default {
+  data:function(){
+      return {
+          msg:'发给App的数据'
+      }
+  },
+
+  methods:{
+      hello:function(){
+          //利用该实例的$emit方法传递一个事件标识，值为子组件的数据
+          this.$emit('sendApp',this.msg)
+      }
+  }
+  
+}
+</script>
+```
+
+```vue
+<template>
+  <div>
+      <!-- 接受子组件传来的标识 -->
+      <Son @sendApp="world"></Son>
+      App.vue
+  </div>
+  <!-- 注意：模板必须有一个根元素 -->
+</template>
+
+<script>
+//引入子组件
+import Son from "./Son.vue";
+export default {
+  //将组件内的变量等暴露出去
+
+  methods:{
+    //子组件标识的事件,参数为子组件的数据
+    world:function(data){
+      console.log(data)
+    }
+  },
+  components:{
+    //需在父组件中声明子组件
+    // Son:Son//别名一致可以只写一个
+    Son
+  }
+}
+</script>
+
+<style>
+div{
+    color:red;
+}
+</style>
+```
+
+
+
+
+
+# 兄弟组件传值
+
+需要一个邻居对象作为数据传输的中介者
+
+bus.js
+
+```javascript
+//兄弟组件之间传值需要另一个实例
+import Vue from 'vue'
+var bus = new Vue()
+export default bus
+```
+
+由A组件传向B组件
+
+BrotherA
+
+```vue
+<template>
+ <div>
+     BrotherA
+     <button @click="sendToB">传递给兄弟组件的值</button>
+</div>
+</template>
+<script>
+//引入邻居实例
+import Bus from './bus'
+
+export default {
+    methods:{
+        sendToB:function(){
+            //借由中间实例bus将数据传过去
+            Bus.$emit('flag','1111') 
+        }
+    }
+}
+</script>
+```
+
+BrotherB
+
+```vue
+<template>
+  <div>
+      BrotherB
+      </div>
+</template>
+
+<script>
+//引入邻居实例
+import Bus from './bus'
+
+export default {
+    //在页面实例化后触发
+    created:function(){
+        //接受中间实例中传递的值
+        //第一个参数为标识
+        //第二个回调函数的参数是传递过来的值
+        Bus.$on('flag',function(data){
+            console.log(data)
+        })
+    }
+}
+</script>
+```
+
+
+
+
+
+
+
+
+
+# vue-router可以监听hash的变化实现单页应用的页面的切换
+
+> //通过path匹配对应组件
+>
+> //在vue实例中通过router属性匹配vue-router,可以简写
+>
+> //vue-router会给所有组件添加一个"坑"--router-view
+>
+> ```html
+> <!DOCTYPE html>
+> <html lang="en">
+> <head>
+>     <meta charset="UTF-8">
+>     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+>     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+>     <title>Document</title>
+> </head>
+> <body>
+>     <div id="app">
+>         <a href="#/news">跳转到news</a>
+>         <a href="#/share">跳转到share</a>
+>         <!-- 使用vue-router 提供的router-view来占位 -->
+>         <router-view></router-view>
+>     </div>
+>     <script src="./node_modules/vue/dist/vue.js"></script>
+>     <!-- vue-router依赖vue -->
+>     <script src="./node_modules/vue-router/dist/vue-router.js"></script>
+>
+>     <script>
+>     var news = Vue.component('news',{
+>         template:"<h1>我是news页面</h1>"
+>     })
+>     var share = Vue.component('share',{
+>         template:"<h1>我是share页面</h1>"
+>     })
+>
+>    
+>     //创建路由监听页面hash值的变化以切换到不同的组件
+>     var router = new VueRouter({
+>         routes:[
+>             //通过path匹配不同的组件
+>             {name:'news',path:'/news',component:news},
+>             {name:'share',path:'/share',component:share},
+>         ]
+>         
+>     })
+>
+>     var vm = new Vue({
+>         el:'#app',
+>         //需要引入当前实例所需的路由
+>         router,
+>         data:function(){
+>             return {
+>                 
+>             }
+>         }
+>     }) 
+>     </script>
+> </body>
+> </html>
+> ```
+>
+
+> 
+>
+> 路由后可以接受参数（/参数）,在设置path时通过/:形参表示,同时可以在对应path匹配的组件中通过 this.$route.params.形参 访问
+>
+> ```html
+> <!DOCTYPE html>
+> <html lang="en">
+> <head>
+>     <meta charset="UTF-8">
+>     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+>     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+>     <title>Document</title>
+> </head>
+> <body>
+>     <div id="app">
+>         <a href="#/news/123">跳转到news</a>
+>         <a href="#/share">跳转到share</a>
+>         <!-- 使用vue-router 提供的router-view来占位 -->
+>         <router-view></router-view>
+>     </div>
+>     <script src="./node_modules/vue/dist/vue.js"></script>
+>     <!-- vue-router依赖vue -->
+>     <script src="./node_modules/vue-router/dist/vue-router.js"></script>
+>
+>     <script>
+>     var news = Vue.component('news',{
+>         created:function(){
+>             //可以获取调用该组件的路由传来的参数
+>             console.log(this.$route.params)
+>         },
+>         template:"<h1>我是news页面</h1>"
+>     })
+>     var share = Vue.component('share',{
+>         template:"<h1>我是share页面</h1>"
+>     })
+>
+>    
+>     //创建路由监听页面hash值的变化以切换到不同的组件
+>     var router = new VueRouter({
+>         routes:[
+>             //通过path匹配不同的组件,在路由中传参数
+>             {name:'news',path:'/news/:id',component:news},
+>             {name:'share',path:'/share',component:share},
+>         ]
+>         
+>     })
+>
+>     var vm = new Vue({
+>         el:'#app',
+>         //需要引入当前实例所需的路由
+>         router,
+>         data:function(){
+>             return {
+>                 
+>             }
+>         }
+>     }) 
+>     </script>
+> </body>
+> </html>
+> ```
+>
+> 
+>
+> router中的linkActiveClass可以设置router-link点中时的样式
+>
+> 在路由中配置子组件:{name:'share',path:'/share',component:share,children:[组件1,组件2]}
+>
+> router-link可以代表a标签（仅仅指href中为hash值#/asdas），在路由传值时，需要按如下方式写
+>
+> <router-link v-bind="{to:'请求地址/'+变量}"></router-link>
+>
+> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Mint-ui（Element-UI）是基于vue的组件,而Mui是一个静态的框架直接引入就可以
+
+# mockPlus是做原型图的
+
+
+
+
+
+在es6中形如methods:{getMax:function(){}}可以简写为methods:{getMax () {}}
+
+
+
+# vue-resource:相当于axios，可以进行数据请求
+
+> 只要全局导入所有组件就都可以用
+>
+> ```javascript
+> import VueResource from 'vue-resource'
+> Vue.use(VueResource)
+> ```
+>
+> 
+>
+> 子组件通过this.$http.get(url).then()可以请求
+>
+> get请求:
+>
+> - this.$http.get(url,{params:{参数}},{emulateJSON:true}).then()
+>
+> - this.$http.get(url?参数).then()
+>
+>
+> post请求:
+>
+> - this.$http.post(url,{参数}，{emulateJSON:true}).then()
+>
+> - jsonp请求:
+>
+>
+> this.$http.jsonp(url).then()
+>
+
+
+
+
+
+
+
+
+
+
+
+在vue中用v-for渲染列表数据时需要给一个key值以提高性能
+
+在style标签中设置scoped可以限制样式只在当前组件内生效
+
+
+
+
+
+
+
+
+
+# **background-repeat**扩展 
+
+> round：
+>
+> 背景图像自动缩放直到适应且填充满整个容器。（CSS3）
+>
+> space：
+>
+> 背景图像以相同的间距平铺且填充满整个容器或某个方向。
+>
+> 
+>
+> 
+
+
+
+
+
+#  render:createElement => createElement(App)可以直接将模板渲染至页面而不需要在页面里面引入模板标签(router-view)
+
+
+
+
+
+
+
+# Console.warn()
+
+向 web 控制台输出一条警告信息
+
+
+
+
+
+
+
+
+
+
+
+# 使用moment.js组件处理时间格式，也可以处理时差
+
+moment(val).format(formatStr)
+
+
+
+
+
+
+
+
+
+
+
+# Flex
+
+> `align-content`属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用
+>
+> `flex-grow`默认为0指默认空间剩余盒子不会放大,设置为2时会占一半
+>
+> `order`属性定义项目的排列顺序。数值越小，排列越靠前，默认为0
+>
+> `flex-shrink`默认为1指默认超出空间时会缩小，设置为0保持原先大小不会改变
+>
+> `flex-basis`属性定义了在分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为`auto`，即项目的本来大小
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 混合开发的一种:
+
+> 前端辅助:在app上加载web前端页面需要在webview(浏览器内核，没办法调用底层功能)中写,调用底层时是向后台发送一个假请求,webview可以监听页面内发送的所有请求,ios或android后台就可以通过这些假请求调用底层设备
+>
+> 前端独立开发:
+>
+> 调用设备底层需要借由5+Runtime![Snipaste_2017-11-18_10-56-15](D:\myProjectRoot\github\stageTen\笔记\img\Snipaste_2017-11-18_10-56-15.png)
+>
+> 或者使用cordoya（phogap）
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Ping++支付控件https://www.pingxx.com/docs/
+
+![charge_paymentflow](D:\myProjectRoot\github\stageTen\笔记\img\charge_paymentflow.png)
+
+```
+pingpp.createPayment(charge, function(result, err){
+    console.log(result);
+    console.log(err.msg);
+    console.log(err.extra);
+    if (result == "success") {
+        // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的支付结果都会跳转到 extra 中对应的 URL。
+    } else if (result == "fail") {
+        // charge 不正确或者微信公众账号支付失败时会在此处返回
+    } else if (result == "cancel") {
+        // 微信公众账号支付取消支付
+    }
+});
+```
+
+
+
+
+
+
+
+
+
+# tcp
+
+## tcp连接的特性:
+
+> 稳定可靠
+>
+> 传输慢
+>
+> 三次握手（连接）（你好，你好，我准备好了）
+>
+> 四次挥手(断开)（再见，再见，拜拜，拜拜）
+>
+> 所有的链接的基本都是tcp链接
+
+
+
+## udp连接的特性:
+
+> 不稳定
+>
+> 传输快
+>
+> 常用于公屏软件(不停的拍照，将照片分割，然后不停的打包，然后输送，不停的的接收，没有三次招手，四次挥手，出现了马赛克，就是丢包现象。)
+
+
+
+
+
+
+
+# 推送
+
+> 推送是长连接(只指移动端，只有关机才会断掉)，普通请求是短链接（连接）
+>
+> 苹果只允许自身服务器推送,第三方若要推送则先发给苹果服务器再由其推送
+
+
+
+
+
+
+
+# im功能
+
+> 腾讯云，阿里云，百度云，网易云，极光IM
+
+
+
+
+
+
+
+# 懒加载是加载停留的当前显示页面的图片，在滚动过程中并不会显示
+
+
+
+
+
+
+
+
+
+# 手机端页面跳转方式:
+
+2号页面撤出称为pop,1号页面推入(2号页面被销毁)
+
+1号页面撤出，2号页面推入称为push(1号页面被推入了缓存栈而未被销毁)
+
+返回上一页this.$router.go(-1)
+
+
+
+
+
+
+
+# 在事件中设置路由(匹配的是路由设置中的name)
+
+this.$router.push({name:'',params:参数})
+
+
+
+
+
+
+
+
+
+# 贝塞尔曲线:
+
+> 越抖越快http://cubic-bezier.com/
+>
+> cubic-bezier(.3,.93,.91,.08)
+>
+
+
+
+
+
+
+
+
+
+# vue过渡动画预设的钩子方法
+
+```vue
+<transition
+  v-on:before-enter="beforeEnter"
+  v-on:enter="enter"
+  v-on:after-enter="afterEnter"
+  v-on:enter-cancelled="enterCancelled"
+  v-on:before-leave="beforeLeave"
+  v-on:leave="leave"
+  v-on:after-leave="afterLeave"
+  v-on:leave-cancelled="leaveCancelled"
+>
+  <!-- ... -->
+</transition>
+```
+
+```javascript
+methods: {
+  // --------
+  // 进入中
+  // --------
+  beforeEnter: function (el) {
+    // ...
+  },
+  // 此回调函数是可选项的设置
+  // 与 CSS 结合时使用
+  enter: function (el, done) {
+    // ...done执行后就会立即完成动画
+    done()
+  },
+  afterEnter: function (el) {
+    // ...
+  },
+  enterCancelled: function (el) {
+    // ...
+  },
+  // --------
+  // 离开时
+  // --------
+  beforeLeave: function (el) {
+    // ...
+  },
+  // 此回调函数是可选项的设置
+  // 与 CSS 结合时使用
+  leave: function (el, done) {
+    // ...
+    done()
+  },
+  afterLeave: function (el) {
+    // ...
+  },
+  // leaveCancelled 只用于 v-show 中
+  leaveCancelled: function (el) {
+    // ...
+  }
+}
+```
+
+> 这些钩子函数可以结合 CSS `transitions/animations` 使用，也可以单独使用。
+>
+> 1. 当只用 JavaScript 过渡的时候，** 在 enter 和 leave 中，回调函数 done 是必须的 **。否则，它们会被同步调用，过渡会立即完成。
+> 2. 推荐对于仅使用 JavaScript 过渡的元素添加 `v-bind:css="false"`，Vue 会跳过 CSS 的检测。这也可以避免过渡过程中 CSS 的影响。
+> 3. 注意：钩子函数只会触发一次，所以若想让enter反复触发，必须在其中声明一个变量
+>
+
+# 
+
+
+
+
+
+
+
+
+
+
+
+# ES6 模块export default(或export var,export function )与 CommonJS 模块moudle.exports完全不同。
+
+> 它们有两个重大差异。
+>
+> - CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。
+> - CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。
+>
+> 第二个差异是因为 CommonJS 加载的是一个对象（即`module.exports`属性），该对象只有在脚本运行完(node的模块)才会生成。而 ES6 模块不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# v-cloak(解决闪烁问题)
+
+**用法：**
+
+这个指令保持在元素上直到关联实例结束编译。和 CSS 规则如 [v-cloak] { display: none } 一起用时，这个指令可以隐藏未编译的 模板标签直到实例准备完毕。
+
+**示例：**
+
+```html
+[v-cloak] {
+display: none;
+} 
+<div v-cloak>
+{{ message }}
+</div>
+```
+
+<div> 不会显示，直到编译结束。
+
+**原理：**
+
+带有v-clock的的元素设置为display:none，隐藏掉，在等到vue解析到带有v-clock的节点时候，会把attribute和class同时remove掉，这样就可以实现防止节点的闪烁。
+
+**实例：**
+
+```html
+//example1:
+<span>{{price}}</span>
+//example2: 
+<span v-bind="price"></span>
+//example3: 
+<span v-cloak>{{price}}</span>
+```
+
+
+
+上例子2和例子3实现的效果是一样的，而例子1在vuejs解析{{price}}之前，用户是可以看到"{{price}}"这个字符串的。而例子2和例子3不会有这种闪烁的情况。

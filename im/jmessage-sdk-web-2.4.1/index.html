@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form >
+            <input type="text">
+    </form>
+   
+    <script src="./jmessage-sdk-web.2.4.1.min.js"></script>
+    <script>
+    var JIM = new JMessage();
+    JIM.init({
+               "appkey" : "a60141f453d0781cffff7c4c",
+           "random_str" : "wqeqweqw",
+            // "signature" : "<signature>",
+            // "timestamp" : "<timestamp>",
+            "flag" : 0
+        }).onSuccess(function(data) {
+            console.log(123)
+           //data.code 返回码
+           //data.message 描述
+          }).onFail(function(data) {
+            console.log(324)
+            // 同上
+        });
+        // JIM.register({
+        // 'username' : 'cyx',
+        // 'password' : '123',
+        //   'is_md5' : 'is_md5',
+        //   'extras' : {'key1':'val1','key2':'val2'},
+        //  'address' : '深圳'
+        // }).onSuccess(function(data) {
+        //     //data.code 返回码
+        //     //data.message 描述
+        //   }).onFail(function(data) {
+        //     // 同上
+        // });
+        // JIM.login({
+        //     'username' : 'w',
+        //     'password' : '123'
+        // }).onSuccess(function(data) {
+        //     //data.code 返回码
+        //     //data.message 描述
+        // }).onFail(function(data){
+        // //同上
+        // });
+        
+
+
+    </script>
+</body>
+</html>

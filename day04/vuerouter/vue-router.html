@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <a href="#/news">跳转到news</a>
+        <a href="#/share">跳转到share</a>
+        <!-- 使用vue-router 提供的router-view来占位 -->
+        <router-view></router-view>
+    </div>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <!-- vue-router依赖vue -->
+    <script src="./node_modules/vue-router/dist/vue-router.js"></script>
+
+    <script>
+    var news = Vue.component('news',{
+        template:"<h1>我是news页面</h1>"
+    })
+    var share = Vue.component('share',{
+        template:"<h1>我是share页面</h1>"
+    })
+
+   
+    //创建路由监听页面hash值的变化以切换到不同的组件
+    var router = new VueRouter({
+        routes:[
+            //通过path匹配不同的组件
+            {name:'news',path:'/news',component:news},
+            {name:'share',path:'/share',component:share},
+        ]
+        
+    })
+
+    var vm = new Vue({
+        el:'#app',
+        //需要引入当前实例所需的路由
+        router,
+        data:function(){
+            return {
+                
+            }
+        }
+    }) 
+    </script>
+</body>
+</html>
