@@ -1,7 +1,11 @@
 <template>
     <div class="temp">
       <div class="mui-content" style="background-color:#fff">
-		    <ul class="mui-table-view mui-grid-view">
+		  
+            <mt-loadmore :top-method="loadTop" :auto-fill="false" ref="loadmore">
+              <ul class="mui-table-view mui-grid-view" v-infinite-scroll="loadMore"
+  infinite-scroll-disabled="loading"
+  infinite-scroll-distance="80">
 		        <li v-for="(item,index) in goodData" :key="index" class="mui-table-view-cell mui-media mui-col-xs-6">
 		            <router-link v-bind="{to:'/gooddetail/'+item.id}">
 		                <img class="mui-media-object" :src="item.img_url">
@@ -19,9 +23,10 @@
                         </div>
                     </router-link>
                 </li>
-		    </ul>    
-		</div>
-    </div>
+		    </ul>  
+            </mt-loadmore>  
+	 </div>
+   </div>
 </template>
 <style>
 .mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body{
@@ -51,23 +56,58 @@ import tool from '../tool/tool'
 export default {
     data(){
         return {
-            goodData:[]
+            goodData:[],
+            allLoaded:false,
+            pageindex:0
         }     
     },
     created(){
-        this.getGoodData()
+        this.pageindex = 1;
+        this.getGoodData(this.pageindex)
     },
     methods:{
-        getGoodData(){
-            var url = `${tool.HTTP}${tool.SERVER_PATH}/api/getgoods?pageindex=1`
+        getGoodData(pageindex){
+            var url = `${tool.HTTP}${tool.SERVER_PATH}/api/getgoods?pageindex=${pageindex}`
             this.$http.get(url).then(
                   res=>{
                     this.goodData = res.body.message
+                   
+                     
                     },
                     res=>{
                         console.log('goodlists页面请求商品列表失败')
                     }
             )
+        },
+        loadTop() {
+            // 加载更多数据
+            this.pageindex =1
+            this.getGoodData(this.pageindex)
+            this.$refs.loadmore.onTopLoaded();
+        },
+        loadBottom() {
+            
+          // 若数据已全部获取完毕
+           
+            this.$refs.loadmore.onBottomLoaded();
+        },
+        loadMore() {
+           
+            console.log( this.pageindex)
+            // // 加载更多数据
+          
+            
+
+
+            this.loading = true;
+            setTimeout(() => {
+                this.pageindex+=1;
+                 if(this.pageindex>2){
+                     return
+                }
+                 this.getGoodData(this.pageindex)
+                this.loading = false;
+            }, 2500);
         }
     }
 }

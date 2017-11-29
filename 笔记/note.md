@@ -2075,6 +2075,19 @@ methods: {
 
 
 
+# vuePicturePreview[移动端Vue.js图片预览插件](https://segmentfault.com/a/1190000009060116)
+
+```vue
+  <lg-preview class="preview"></lg-preview>
+  	<img id="pre" v-for="(img,index) in imgs" v-preview="img" :src="img" :key="index">
+```
+
+
+
+
+
+
+
 
 
 
