@@ -10,28 +10,40 @@
 6 silly lifecycle webpackDemo@1.0.0~preserver: no script for preserver, continuing
 7 info lifecycle webpackDemo@1.0.0~server: webpackDemo@1.0.0
 8 verbose lifecycle webpackDemo@1.0.0~server: unsafe-perm in lifecycle true
-9 verbose lifecycle webpackDemo@1.0.0~server: PATH: E:\nodejs\node_modules\npm\bin\node-gyp-bin;D:\myProjectRoot\github\stageTen\day08\vuedemo\node_modules\.bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;D:\MySQL\bin;E:\nodejs\;C:\Users\10945\AppData\Local\Microsoft\WindowsApps;C:\Users\10945\AppData\Roaming\npm;C:\Program Files\Microsoft VS Code\bin
+9 verbose lifecycle webpackDemo@1.0.0~server: PATH: E:\nodejs\node_modules\npm\bin\node-gyp-bin;D:\myProjectRoot\github\stageTen\day08\vuedemo\node_modules\.bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;D:\MySQL\bin;E:\nodejs\;C:\Users\10945\AppData\Local\Microsoft\WindowsApps;C:\Users\10945\AppData\Roaming\npm;C:\Program Files\Microsoft VS Code\bin;
 10 verbose lifecycle webpackDemo@1.0.0~server: CWD: D:\myProjectRoot\github\stageTen\day08\vuedemo
 11 silly lifecycle webpackDemo@1.0.0~server: Args: [ '/d /s /c',
 11 silly lifecycle   'webpack-dev-server --hot --open --content-base src' ]
-12 verbose stack Error: kill ENOSYS
-12 verbose stack     at exports._errnoException (util.js:1020:11)
-12 verbose stack     at process.kill (internal/process.js:190:13)
-12 verbose stack     at process.listener (E:\nodejs\node_modules\npm\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:86:15)
-12 verbose stack     at emitNone (events.js:91:20)
-12 verbose stack     at process.emit (events.js:185:7)
-12 verbose stack     at processEmit (E:\nodejs\node_modules\npm\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:146:32)
-12 verbose stack     at processEmit (E:\nodejs\node_modules\npm\node_modules\npm-registry-client\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:146:32)
-12 verbose stack     at Signal.wrap.onsignal (internal/process.js:217:44)
-13 verbose cwd D:\myProjectRoot\github\stageTen\day08\vuedemo
-14 error Windows_NT 10.0.15063
-15 error argv "E:\\nodejs\\node.exe" "E:\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "run" "server"
-16 error node v6.11.2
-17 error npm  v3.10.10
-18 error code ENOSYS
-19 error errno ENOSYS
-20 error syscall kill
-21 error kill ENOSYS
-22 error If you need help, you may report this error at:
-22 error     <https://github.com/npm/npm/issues>
-23 verbose exit [ 1, true ]
+12 silly lifecycle webpackDemo@1.0.0~server: Returned: code: 3221225786  signal: null
+13 info lifecycle webpackDemo@1.0.0~server: Failed to exec server script
+14 verbose stack Error: webpackDemo@1.0.0 server: `webpack-dev-server --hot --open --content-base src`
+14 verbose stack Exit status 3221225786
+14 verbose stack     at EventEmitter.<anonymous> (E:\nodejs\node_modules\npm\lib\utils\lifecycle.js:255:16)
+14 verbose stack     at emitTwo (events.js:106:13)
+14 verbose stack     at EventEmitter.emit (events.js:191:7)
+14 verbose stack     at ChildProcess.<anonymous> (E:\nodejs\node_modules\npm\lib\utils\spawn.js:40:14)
+14 verbose stack     at emitTwo (events.js:106:13)
+14 verbose stack     at ChildProcess.emit (events.js:191:7)
+14 verbose stack     at maybeClose (internal/child_process.js:891:16)
+14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
+15 verbose pkgid webpackDemo@1.0.0
+16 verbose cwd D:\myProjectRoot\github\stageTen\day08\vuedemo
+17 error Windows_NT 10.0.16299
+18 error argv "E:\\nodejs\\node.exe" "E:\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "run" "server"
+19 error node v6.11.2
+20 error npm  v3.10.10
+21 error code ELIFECYCLE
+22 error webpackDemo@1.0.0 server: `webpack-dev-server --hot --open --content-base src`
+22 error Exit status 3221225786
+23 error Failed at the webpackDemo@1.0.0 server script 'webpack-dev-server --hot --open --content-base src'.
+23 error Make sure you have the latest version of node.js and npm installed.
+23 error If you do, this is most likely a problem with the webpackDemo package,
+23 error not with npm itself.
+23 error Tell the author that this fails on your system:
+23 error     webpack-dev-server --hot --open --content-base src
+23 error You can get information on how to open an issue for this project with:
+23 error     npm bugs webpackDemo
+23 error Or if that isn't available, you can get their info via:
+23 error     npm owner ls webpackDemo
+23 error There is likely additional logging output above.
+24 verbose exit [ 1, true ]

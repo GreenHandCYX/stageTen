@@ -1951,6 +1951,8 @@ pingpp.createPayment(charge, function(result, err){
 
 
 
+
+
 # 在事件中设置路由(匹配的是路由设置中的name)
 
 this.$router.push({name:'',params:参数})
@@ -2131,3 +2133,28 @@ display: none;
 
 
 上例子2和例子3实现的效果是一样的，而例子1在vuejs解析{{price}}之前，用户是可以看到"{{price}}"这个字符串的。而例子2和例子3不会有这种闪烁的情况。
+
+
+
+
+
+
+
+# 监听路由变化来判断是否显示返回按钮
+
+```js
+	watch:{
+		//监听路由的新的跳转值,不是/home则都应该有返回上一页
+		'$route':function(newVal,oldVal){
+			// console.log(newVal)
+			// console.log(oldVal)
+			if(newVal.path != '/home'){
+				this.isShow = true;
+				// console.log(this.isShow)
+			}else{
+				this.isShow = false;
+			}
+		}
+	}
+```
+
